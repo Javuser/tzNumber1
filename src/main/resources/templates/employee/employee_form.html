@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employee Form</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            $('#country').change(function() {
+                var country = $(this).val();
+                var citySelect = $('#city');
+                citySelect.empty();
+
+                var cities = {
+                    'USA': ['New York', 'Los Angeles', 'Chicago'],
+                    'Canada': ['Toronto', 'Vancouver', 'Montreal'],
+                    'UK': ['London', 'Manchester', 'Birmingham'],
+                    'Germany': ['Berlin', 'Munich', 'Frankfurt'],
+                    'Australia': ['Sydney', 'Melbourne', 'Brisbane']
+                };
+
+                if (cities[country]) {
+                    $.each(cities[country], function(index, city) {
+                        citySelect.append('<option value="' + city + '">' + city + '</option>');
+                    });
+                }
+            }).change();
+        });
+    </script>
+</head>
+<body>
+<h1 th:text="${employee.id != null ? 'Edit Employee' : 'Add New Employee'}"></h1>
+<form th:action="@{/employees}" th:method="post" th:object="${employee}">
+    <input type="hidden" th:field="*{id}" />
+    <div>
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" th:field="*{lastName}" required />
+    </div>
+    <div>
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" th:field="*{firstName}" required />
+    </div>
+    <div>
+        <label for="middleName">Middle Name:</label>
+        <input type="text" id="middleName" th:field="*{middleName}" />
+    </div>
+    <div>
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="text" id="phoneNumber" th:field="*{phoneNumber}" required />
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" th:field="*{email}" required />
+    </div>
+    <div>
+        <label for="country">Country:</label>
+        <select id="country" th:field="*{country}" required>
+            <option value="">Select Country</option>
+            <option value="USA">USA</option>
+            <option value="Canada">Canada</option>
+            <option value="UK">UK</option>
+            <option value="Germany">Germany</option>
+            <option value="Australia">Australia</option>
+        </select>
+    </div>
+    <div>
+        <label for="city">City:</label>
+        <select id="city" th:field="*{city}" required>
+            <option value="">Select City</option>
+        </select>
+    </div>
+    <div>
+        <button type="submit" th:text="${employee.id != null ? 'Update' : 'Create'}"></button>
+    </div>
+</form>
+<a th:href="@{/employees}">Back to List</a>
+</body>
+</html>

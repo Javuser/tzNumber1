@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employee List</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<h1>Employee List</h1>
+
+<form th:action="@{/employees}" method="get">
+    <input type="text" name="keyword" th:value="${keyword}" placeholder="Search by Last Name" />
+    <button type="submit">Search</button>
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>Last Name</th>
+        <th>First Name</th>
+        <th>Middle Name</th>
+        <th>Phone Number</th>
+        <th>Email</th>
+        <th>Country</th>
+        <th>City</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="employee : ${employees}">
+        <td th:text="${employee.lastName}"></td>
+        <td th:text="${employee.firstName}"></td>
+        <td th:text="${employee.middleName}"></td>
+        <td th:text="${employee.phoneNumber}"></td>
+        <td th:text="${employee.email}"></td>
+        <td th:text="${employee.country}"></td>
+        <td th:text="${employee.city}"></td>
+        <td>
+            <a th:href="@{/employees/{id}(id=${employee.id})}">Edit</a>
+            <form th:action="@{/employees/delete/{id}(id=${employee.id})}" method="post" style="display: inline;">
+                <input type="hidden" name="_method" value="delete" />
+                <button type="submit">Delete</button>
+            </form>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/employees/new}">Add New Employee</a>
+</body>
+</html>
